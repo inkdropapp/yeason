@@ -10,7 +10,6 @@
   ],
   "main": "./src/cson.js",
   "scripts": {
-    "prepublish": "grunt clean lint coffee",
     "test": "jasmine-focused --captureExceptions spec/"
   },
   "repository": {
