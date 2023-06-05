@@ -1,20 +1,24 @@
 ##### Atom and all repositories under Atom will be archived on December 15, 2022. Learn more in our [official announcement](https://github.blog/2022-06-08-sunsetting-atom/)
- # season - CSON Node module
+
+# season - CSON Node module
+
 [![macOS Build Status](https://travis-ci.org/atom/season.svg?branch=master)](https://travis-ci.org/atom/season) [![Windows Build Status](https://ci.appveyor.com/api/projects/status/v3bth3ooq5q8k8lx/branch/master?svg=true)](https://ci.appveyor.com/project/Atom/season) [![Dependency Status](https://david-dm.org/atom/season.svg)](https://david-dm.org/atom/season)
 
-Read and write CSON/JSON files seamlessly.
+Read and write YAML/CSON/JSON files seamlessly.
+It does not require `cson-parser`.
 
 ## Installing
 
 ```sh
-npm install season
+npm install @inkdropapp/yeason
 ```
 
 ## Building
-  * Clone the repository
-  * Run `npm install`
-  * Run `grunt` to compile the CoffeeScript code
-  * Run `grunt test` to run the specs
+
+- Clone the repository
+- Run `npm install`
+- Run `grunt` to compile the CoffeeScript code
+- Run `grunt test` to run the specs
 
 ## Compiling CSON to JSON
 
@@ -61,7 +65,7 @@ once it is read and parsed.
 `objectPath` - The string path to a JSON or CSON object file.
 
 `callback` - The function to call with the error or object once the path
-             is read and parsed.
+is read and parsed.
 
 ### CSON.readFileSync(objectPath)
 
@@ -96,6 +100,6 @@ otherwise.
 Resolve the path to an existent file that has a `.json` or `.cson` extension.
 
 `objectPath` - The string path to a JSON or CSON object file with or without
-               an extension.
+an extension.
 
 Returns the path to an existent CSON or JSON file or `null` if none found.
