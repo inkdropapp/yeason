@@ -1,0 +1,23 @@
+name: CI
+
+on: [push]
+
+env:
+  CI: true
+
+jobs:
+  Test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm i
+      - name: Run tests
+        run: npm run test
