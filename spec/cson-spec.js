@@ -138,18 +138,21 @@ a:
     it('returns the path to the object file', function () {
       const objectDir = temp.mkdirSync('season-object-dir-')
       const file1 = path.join(objectDir, 'file1.json')
-      const file2 = path.join(objectDir, 'file2.cson')
-      const file3 = path.join(objectDir, 'file3.json')
+      const file2 = path.join(objectDir, 'file2.yml')
+      const file3 = path.join(objectDir, 'file3.cson')
+      const file4 = path.join(objectDir, 'file4.json')
       const folder1 = path.join(objectDir, 'folder1.json')
       fs.mkdirSync(folder1)
       fs.writeFileSync(file1, '{}')
       fs.writeFileSync(file2, '{}')
       fs.writeFileSync(file3, '{}')
+      fs.writeFileSync(file4, '{}')
 
       expect(CSON.resolve(file1)).toBe(file1)
       expect(CSON.resolve(file2)).toBe(file2)
       expect(CSON.resolve(file3)).toBe(file3)
-      expect(CSON.resolve(path.join(objectDir, 'file4'))).toBe(null)
+      expect(CSON.resolve(file4)).toBe(file4)
+      expect(CSON.resolve(path.join(objectDir, 'file5'))).toBe(null)
       expect(CSON.resolve(folder1)).toBe(null)
       expect(CSON.resolve()).toBe(null)
       expect(CSON.resolve(null)).toBe(null)
@@ -175,6 +178,22 @@ a:
 
         return runs(() => expect(CSON.readFileSync(jsonPath)).toEqual(object))
       }))
+
+    describe('when called with a .yml path', function () {
+      const yamlPath = path.join(
+        temp.mkdirSync('season-object-dir-'),
+        'file1.yml'
+      )
+
+      return it('writes the object and calls back', function () {
+        const callback = jasmine.createSpy('callback')
+        CSON.writeFile(yamlPath, object, callback)
+
+        waitsFor(() => callback.callCount === 1)
+
+        return runs(() => expect(CSON.readFileSync(yamlPath)).toEqual(object))
+      })
+    })
 
     return describe('when called with a .cson path', function () {
       const csonPath = path.join(

@@ -3,6 +3,7 @@ const path = require('path')
 
 const fs = require('@craftzdog/fs-plus')
 const CSON = require('./parser')
+const YAML = require('yaml')
 
 let csonCache = null
 
@@ -43,6 +44,13 @@ const parseObject = function (objectPath, contents, options) {
         throw error
       }
     }
+  } else if (path.extname(objectPath) === '.yml') {
+    return YAML.parse(contents, {
+      uniqueKeys:
+        options?.allowDuplicateKeys === undefined
+          ? false
+          : !options.allowDuplicateKeys
+    })
   } else {
     return JSON.parse(contents)
   }
@@ -128,7 +136,9 @@ module.exports = {
     }
 
     const extension = path.extname(objectPath)
-    return extension === '.cson' || extension === '.json'
+    return (
+      extension === '.cson' || extension === '.yml' || extension === '.json'
+    )
   },
 
   resolve(objectPath) {
@@ -146,6 +156,11 @@ module.exports = {
     const jsonPath = `${objectPath}.json`
     if (fs.isFileSync(jsonPath)) {
       return jsonPath
+    }
+
+    const yamlPath = `${objectPath}.yml`
+    if (fs.isFileSync(yamlPath)) {
+      return yamlPath
     }
 
     const csonPath = `${objectPath}.cson`
@@ -274,7 +289,10 @@ module.exports = {
   },
 
   stringifyPath(objectPath, object, visitor, space) {
-    if (path.extname(objectPath) === '.cson') {
+    if (
+      path.extname(objectPath) === '.cson' ||
+      path.extname(objectPath) === '.yml'
+    ) {
       return this.stringify(object, visitor, space)
     } else {
       return JSON.stringify(object, undefined, 2)
