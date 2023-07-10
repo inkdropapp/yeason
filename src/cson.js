@@ -1,9 +1,7 @@
 const crypto = require('crypto')
 const path = require('path')
-
 const fs = require('@craftzdog/fs-plus')
 const CSON = require('./parser')
-const YAML = require('yaml')
 
 let csonCache = null
 
@@ -45,6 +43,7 @@ const parseObject = function (objectPath, contents, options) {
       }
     }
   } else if (path.extname(objectPath) === '.yml') {
+    const YAML = require('yaml')
     return YAML.parse(contents, {
       uniqueKeys:
         options?.allowDuplicateKeys === undefined
